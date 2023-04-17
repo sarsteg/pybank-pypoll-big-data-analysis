@@ -13,8 +13,8 @@ os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 def print_percentages(csv_reader):
 
-    # Make our variables global when needed
-    header_row = True
+    # Make variables global when needed
+    first_row = True
 
     global change
     global count_months
@@ -44,16 +44,15 @@ def print_percentages(csv_reader):
         # Calculate the net total amount of "Profit/Losses" over the entire period
         net_total += int(row["Profit/Losses"])
 
-        #Re
         # Calculate the changes in "Profit/Losses" over the entire period, then find the average of those changes
-        if header_row: #If row is the header, then we need to skip b/c not possible to change without previous month
+        if first_row: #If row is the first row, then we need to skip b/c not possible to change without previous month
             previous_month = int(row["Profit/Losses"]) # Log previous month for prep
-            header_row = False # Only skip the first row of the data
+            first_row = False # Only skip the first row of the data
         else:
             current_month = int(row["Profit/Losses"])
             change = current_month - previous_month
             previous_month = current_month # Prep for next row
-            print(change)
+            #print(change)
 
             # Gather variables need to find the average
             count_changes += 1
@@ -78,10 +77,11 @@ with open(CSV_PATH) as csv_file:
     csv_reader = csv.DictReader(csv_file)
     
     # Keep header row becausing using DictReader
+    # Note: The header row IS SAVED as the key for each row. 
     #header = next(csv_reader)
     #print(header)
 
-    row = next(csv_reader)
+    #row = next(csv_reader)
     #print(type(next(csv_reader)))
 
     # Run the function defined above with the csv file
@@ -93,7 +93,7 @@ print("Financial Analysis")
 print("----------------------------")
 print(f"Total Months: {count_months}") 
 print(f"Total: ${net_total}")
-print(f"Average Change: ${sum_changes/count_changes}")
+print(f"Average Change: ${sum_changes/count_changes:.2f}")
 print(f"Greatest Increase in Profits: {greatest_increase_date} (${greatest_increase})")
 print(f"Greatest Decrease in Profits: {greatest_decrease_date} (${greatest_decrease})")
 
@@ -103,7 +103,7 @@ with open("PyBank.txt", "w") as text_file:
     text_file.write("----------------------------\n")
     text_file.write(f"Total Months: {count_months}\n")
     text_file.write(f"Total: ${net_total}\n")
-    text_file.write(f"Average Change: ${sum_changes/count_changes}\n")
+    text_file.write(f"Average Change: ${sum_changes/count_changes:.2f}\n")
     text_file.write(f"Greatest Increase in Profits: {greatest_increase_date} (${greatest_increase})\n")
     text_file.write(f"Greatest Decrease in Profits: {greatest_decrease_date} (${greatest_decrease})\n")
 
