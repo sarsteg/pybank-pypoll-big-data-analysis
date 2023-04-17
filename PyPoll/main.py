@@ -64,7 +64,7 @@ def analyze_votes(election_data):
 # Run function on data
 with open(CSV_PATH) as csv_file:
     election_data = csv.reader(csv_file)
-    next(election_data) # Skip header row
+    header = next(election_data) # Skip header row
     analyze_votes(election_data)
 
 # Winner of the election based on popular vote, see support documents on finding max
