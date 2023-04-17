@@ -13,90 +13,85 @@ os.chdir(os.path.dirname(os.path.realpath(__file__)))
 #-----------------------------------------
 
 # Define rows for dataset
-candidate_col = 3
+candidate_col = 2 # Column C
 
 #-----------------------------------------
 
 def analyze_votes(election_data):
 
-# List of variables created in the code
-global candidates
-global total_votes
-global candidate_0_count
-global candidate_1_count
-global candidate_2_count
+    # List of variables created in the code
+    global candidate_list
+    global total_votes
+    global candidate_votes
 
-candidates = ()
-total_votes = 0
-candidate_0_count = 0
-candidate_1_count = 0
-candidate_2_count = 0
+    candidate_list = list()
+    candidate_votes = {}
+    total_votes = 0
+    candidate_0_count = 0
+    candidate_1_count = 0
+    candidate_2_count = 0
 
-# Loop through the table
-for row in election_data:
+    # Loop through the table
+    for row in election_data:
 
-    # Set the row's candidate
-    current_candidate = row[candidate_col]
+        # Set the row's candidate
+        current_candidate = row[candidate_col]
 
-    # Who are the candidates?
-    # Add candidate to set, sets only accept unique values
-    # This will be used to find the complete list of candidates who received votes
-    candidates.add(row[candidate_col])
+        # Check if the candidate is on our set
+        is_candidate_in_list = current_candidate in candidate_list
 
-    # Total number of votes cast
-    # Each row is 1 vote
-    total_votes += 1
+        # If not in list, add candidate to list
+        if is_candidate_in_list == False:
+            # Add candidate to list
+            candidate_list.append(current_candidate)
+            # Add candidate to dictionary for votes
+            candidate_votes[current_candidate] = 0
+        # If on list, skip
+        else:
+            # Candidate already exists on list and in votes dictionary
+            pass
 
-    # Now that we are compiling the candidates, start tally for each candidate
-    # Total number of votes each candidate won
-    if candidates[0] == current_candidate:
-        candidate_0_count += 1
-    elif candidates[1] == current_candidate:
-        candidate_1_count += 1
-    elif candidates[2] == current_candidate:
-        candidate_2_count += 1
-    else:
-        print("Error: Candidate not found")
+        # Now that we are compiling the candidates, start tally for each candidate
+        # Total number of votes each candidate won
+        candidate_votes[current_candidate] += 1
 
-    return candidates, total_votes, candidate_0_count, candidate_1_count, candidate_2_count
+        # Total number of votes cast
+        # Each row is 1 vote
+        total_votes += 1
+
+    return candidate_list, candidate_votes, total_votes
 
 # Run function on data
 with open(CSV_PATH) as csv_file:
     election_data = csv.reader(csv_file)
+    next(election_data) # Skip header row
     analyze_votes(election_data)
 
-# Now that the tally has been completed, create summary variables
-# Calculate percent for each candidate
-candidate_0_percent = candidate_0_count / total_votes
-candidate_1_percent = candidate_1_count / total_votes
-candidate_2_percent = candidate_2_count / total_votes
-
-# Winner of the election based on popular vote
-winner_votes = max(candidate_0_count, candidate_1_count, candidate_2_count)
-
-# Match with the candidate
-for candidate in candidates: 
-    if candidate_0_count == winner_votes: 
-        winner = candidates[0]
-    elif candidate_1_count == winner_votes:
-        winner = candidates[1]
-    elif candidate_2_count == winner_votes:
-        winner = candidates[2]
-    else:
-        print("Error: Candidate not found")
+# Winner of the election based on popular vote, see support documents on finding max
+winner = max(key for key, value in candidate_votes.items() if value == max(candidate_votes.values()))
 
 # Print the analysis to the terminal
 print("Election Results")
 print("-------------------------")
 print(f"Total Votes: {total_votes}")
 print("-------------------------")
-print(f"{candidates[0]}: {candidate_0_percent:.3%} ({candidate_0_count})")
-print(f"{candidates[1]}: {candidate_1_percent:.3%} ({candidate_1_count})")
-print(f"{candidates[2]}: {candidate_2_percent:.3%} ({candidate_2_count})")
+for candidate in candidate_list:
+    print(f"{candidate}: {candidate_votes[candidate]/total_votes:.3%} ({candidate_votes[candidate]})")
 print("-------------------------")
 print(f"Winner: {winner}")
 print("-------------------------")
 
+
 # Export a text file with the results
 # Specify the file to write to
 output_path = os.path.join("Analysis", "election_results.txt")
+with open(output_path, "w") as text_file:
+    text_file.write("Election Results\n")
+    text_file.write("-------------------------\n")
+    text_file.write(f"Total Votes: {total_votes}\n")
+    text_file.write("-------------------------\n")
+    for candidate in candidate_list:
+        text_file.write(f"{candidate}: {candidate_votes[candidate]/total_votes:.3%} ({candidate_votes[candidate]})\n")
+    text_file.write("-------------------------\n")
+    text_file.write(f"Winner: {winner}\n")
+    text_file.write("-------------------------\n")
