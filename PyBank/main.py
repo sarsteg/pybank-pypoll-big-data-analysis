@@ -1,5 +1,8 @@
+# Import libraries
 import os
 import csv
+
+#-----------------------------------------
 
 # Tell the script where the data is located
 CSV_PATH = os.path.join("Resources", "budget_data.csv")
@@ -10,6 +13,7 @@ CSV_PATH = os.path.join("Resources", "budget_data.csv")
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 #print(os.getcwd())
 
+#-----------------------------------------
 
 def print_percentages(csv_reader):
 
@@ -71,7 +75,7 @@ def print_percentages(csv_reader):
 
     return (count_months, net_total, sum_changes, count_changes, greatest_increase_date, greatest_increase, greatest_decrease_date, greatest_decrease)
 
-        
+#-----------------------------------------        
 
 with open(CSV_PATH) as csv_file:
     csv_reader = csv.DictReader(csv_file)
@@ -87,6 +91,7 @@ with open(CSV_PATH) as csv_file:
     # Run the function defined above with the csv file
     print_percentages(csv_reader)
 
+#-----------------------------------------
 
 # Print the analysis to the terminal
 print("Financial Analysis")
@@ -98,7 +103,8 @@ print(f"Greatest Increase in Profits: {greatest_increase_date} (${greatest_incre
 print(f"Greatest Decrease in Profits: {greatest_decrease_date} (${greatest_decrease})")
 
 # Export a text file with the results
-with open("PyBank.txt", "w") as text_file:
+output_path = os.path.join("Analysis", "PyBank.txt")
+with open(output_path, "w") as text_file:
     text_file.write("Financial Analysis\n")
     text_file.write("----------------------------\n")
     text_file.write(f"Total Months: {count_months}\n")
