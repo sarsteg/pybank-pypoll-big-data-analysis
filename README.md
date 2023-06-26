@@ -1,8 +1,6 @@
-# Python Challenge 3
+# Python Data Analysis
 
-These two projects were completed as a part of Challenge 3 for UTSA Data Analysis and Visualization Bootcamp.
-
-The datasets for the projects are intentionally large to showcase one of the limits of Excel-based analysis. By creating a script in Python, we can create a powerful option for handling big data. Each project below has its own script for the analysis. The script can be found in the Project's folder. Within each projects folder is a copy of the original data, in the sub-folder **Resources**. An export of each analysis is available in a textfile in the sub-folder **Analysis**. Websites used to inform my script for each project can be found in the folder **Support Documents**.
+By creating a script in Python, I have created a powerful option for handling big data. The datasets for the projects are intentionally large to showcase one of the limits of Excel-based analysis. Each project below has its own script for the analysis. The script can be found in the Project's folder. Within each projects folder is a copy of the original data, in the sub-folder **Resources**. An export of each analysis is available in a textfile in the sub-folder **Analysis**. Websites used to inform my script for each project can be found in the folder **Support Documents**.
 
 Each project successfully reads a csv file, analyzes the data, and displays the results in the terminal and a textfile. Other features in the projects include for loops, defining functions, lists, dictionaries, if statements, addition assignment, and basic arithmetic.
 
@@ -33,6 +31,8 @@ A small-town needs help modernizing its vote-counting process. I was given a set
 Some key features of this script are that it is built so that it could accommodate future polls with a change of the dataset. The names of the candidates are taken from the data and stored in a list. The votes cast for each candidate are stored in a dictionary.
 
 The code could be further improved to allow the user to select the data file that they are interested in collecting the results of poll data using a library such as tkinter. In tkinter, a pop-up window could be created that allows the user to select the file of interest and then provides the path to the file for use in the rest of the script.
+
+These two projects were completed as a part of UTSA's Data Analysis and Visualization Certification.
 
 Below is a capture of the output:
 
